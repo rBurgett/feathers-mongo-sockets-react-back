@@ -23,13 +23,16 @@ const app = feathers();
 
 app.configure(configuration(path.join(__dirname, '..')));
 
+const description = 'feather-mongo-sockets-react-front description';
+const image = '';
+
 app.use(compress())
     .options('*', cors())
     .use(cors())
     .use(favicon(path.join(app.get('public'), 'favicon.ico')))
-    .get('/', homeHandler())
-    .get('/about', aboutHandler())
-    .get('/login', loginHandler())
+    .get('/', homeHandler({ title: 'Home', description, image }))
+    .get('/about', aboutHandler({ title: 'About', description, image }))
+    .get('/login', loginHandler({ title: 'Login', description, image }))
     .use('/', serveStatic(app.get('public')))
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: true }))

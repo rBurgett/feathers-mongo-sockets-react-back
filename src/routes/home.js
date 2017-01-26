@@ -3,9 +3,15 @@ const handleError = require('../errors');
 
 const indexHTML = fs.readFileSync('./public/index.html', 'utf8');
 
-const home = () => (req, res) => {
+const home = ({ title, description, image }) => (req, res) => {
     try {
-        res.send(indexHTML);
+        const html = indexHTML
+            .replace(/{{title}}/g, title)
+            .replace(/{{url}}/g, `${req.protocol}://${req.get('host')}`)
+            .replace(/{{image}}/g, image)
+            .replace(/{{description}}/g, description);
+
+        res.send(html);
     } catch (err) {
         res.sendStatus(500);
         handleError(err);
